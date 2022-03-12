@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: api-dev
+  namespace: api
+  labels:
+    app: api-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-dev
+  template:  
+    metadata:
+      labels: 
+        app: api-dev
+    spec:      
+      containers:
+        - name: api-dev
+          image: quickbooks2018/green:latest
+          ports: 
+            - containerPort: 80          
+          env:
+            - name: API_DEV
+              value: "BBC"
+            - name: API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-creds
+                  key: api-creds
+      imagePullSecrets:
+       - name: regcred             
